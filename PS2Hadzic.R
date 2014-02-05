@@ -1,10 +1,13 @@
 #Problem Set 2
 #Dino Hadzic
 
-rm(list=ls()) #Clears the worspace in R.
+rm(list=ls()) #Clears the workspace in R.
 setwd("/Users/dinohadzic/Desktop/ProblemSet2") #Sets the working directory
 
 #Question 1
+#Write a function to calculate Leemis' m statistic and Cho-Gains' d statistic.  The function should have as an input (i) a matrix or 
+#vector of election returns and (ii) an option (or options) that controls whether the m statistic should be calculated, the d statistic
+#should be calculated, or both.  The output should be a list containing the results, including the full digit distribution.
 
 Election_fraud <- function(Totals, statistic){         #Sets Totals and statistic as the two arguments for the function Election_fraud.   
   
@@ -54,3 +57,7 @@ Election_fraud <- function(Totals, statistic){         #Sets Totals and statisti
 }                                                                                   #the digit distribution if the statistic argument
                                                                                     #is set to "m&d."
 
+
+#Question 2
+#Create a new function called print.benfords() that will ouput a table containing: (1) The name of each statistic; (2) The statistic as
+#it was calculated; (3) The relevant number of asterisks; (3) A legend at the bottom explaining the asteriks.
