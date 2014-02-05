@@ -6,12 +6,6 @@ setwd("/Users/dinohadzic/Desktop/ProblemSet2") #Sets the working directory
 
 #Question 1
 
-Votes <- sample(1:1000, 100, replace=TRUE)
-Votes <- matrix(c(1,2,3,4), ncol=2)
-Totals <- Votes
-Int
-Totals
-
 Election_fraud <- function(Totals, statistic){         #Sets Totals and statistic as the two arguments for the function Election_fraud.   
   
   Int <- as.numeric(substr(Totals, start=1, stop=1))   #Creates a vector from the input Totals (which can be either a vector or matrix) 
