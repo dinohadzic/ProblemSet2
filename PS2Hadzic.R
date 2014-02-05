@@ -61,3 +61,59 @@ Election_fraud <- function(Totals, statistic){         #Sets Totals and statisti
 #Question 2
 #Create a new function called print.benfords() that will ouput a table containing: (1) The name of each statistic; (2) The statistic as
 #it was calculated; (3) The relevant number of asterisks; (3) A legend at the bottom explaining the asteriks.
+
+print.benfords <- function(Totals){         
+  Int <- as.numeric(substr(Totals, start=1, stop=1))   
+  X <- numeric(9)                                    
+  for(i in 1:9){                                      
+    X[i] <- length(which(Int==i))/length(Int)          
+  } 
+  m1 <- numeric(9)                                    
+  for(i in 1:9){                                      
+    m1[i] <- X[i] - log10(1 + 1/i)
+  }
+  m2 <- sqrt(length(Int)) * max(abs(m1))  
+  d1 <- numeric(9)                                    
+  for(i in 1:9){                                      
+    d1[i] <- (X[i]-log10(1+1/i))^2
+  }
+  d2 <- sqrt(sum(d1))                                 
+  d3 <- sqrt(length(Int)) * d2
+  m2 <- substr(m2, start=1, stop=5)
+  m2 <- as.numeric(m2)
+  d3 <- substr(d3, start=1, stop=5)
+  d3 <- as.numeric(d3)
+  Sig_Level <- character(2)
+  for(i in 1:length(Sig_Level)){
+    if(m2 >= 0.851 & m2 < 0.967){
+      Sig_Level[1] <- "*"
+    }
+    if(m2 >= 0.967 & m2 < 1.212){
+      Sig_Level[1] <- "**"
+    }
+    if(m2 >= 1.212){
+      Sig_Level[1] <- "***"
+    }
+    if(m2 < 0.851){
+      Sig_Level[1] <- "Not Significant"
+    }
+    if(d3 >= 1.212 & d3 < 1.330 ){
+      Sig_Level[2] <- "*"
+    }
+    if(d3 >= 1.330 & d3 < 1.569 ){
+      Sig_Level[2] <- "**"
+    }
+    if(d3 >= 1.569){
+      Sig_Level[2] <- "***"
+    }
+    if(d3 < 1.212){
+      Sig_Level[2] <- "Not Significant"
+    }
+  }
+  Value <- c(m2,d3)
+  Statistic <- c("Leemis_m", "Cho-Gains_d")
+  print(as.table(cbind("Statistic"=Statistic, "Value"=Value, "Significance Level"=Sig_Level)))
+  cat("\n")
+  cat("Significance levels: 0.10*, 0.05**, 0.01***")
+}
+print.benfords(Totals)
