@@ -140,3 +140,72 @@ print.benfords <- function(Totals){                           #Sets Totals as th
   
   cat("Significance levels: 0.10*, 0.05**, 0.01***")            #Adds a legend beneath the table that includes the meaning of the asterisks
 }                                                                 #with respect to significance levels.
+
+
+#Question 3: Part 1
+#Develop a function that will test your function.
+
+testing <- function(Yes.Benfords, No.Benfords){   
+  Int <- as.numeric(substr(Yes.Benfords, start=1, stop=1))     
+  X <- numeric(9)                                     
+  for(i in 1:9){                                      
+    X[i] <- length(which(Int==i))/length(Int)  
+  }   
+  m1 <- numeric(9)                                    
+  for(i in 1:9){                                     
+    m1[i] <- X[i] - log10(1 + 1/i) 
+  } 
+  m2 <- sqrt(length(Int)) * max(abs(m1)) 
+  
+  d1 <- numeric(9)                                   
+  for(i in 1:9){                                     
+    d1[i] <- (X[i]-log10(1+1/i))^2
+  }
+  d2 <- sqrt(sum(d1))                                 
+  d3 <- sqrt(length(Int)) * d2 
+  
+  Int2 <- as.numeric(substr(No.Benfords, start=1, stop=1))     
+  X2 <- numeric(9)                                     
+  for(i in 1:9){                                      
+    X2[i] <- length(which(Int2==i))/length(Int2)  
+  }                                                                            
+  m1.2 <- numeric(9)                                    
+  for(i in 1:9){                                     
+    m1.2[i] <- X2[i] - log10(1 + 1/i)
+  } 
+  m2.2 <- sqrt(length(Int2)) * max(abs(m1.2))     
+  
+  d1.2 <- numeric(9)                                   
+  for(i in 1:9){                                     
+    d1.2[i] <- (X2[i]-log10(1+1/i))^2
+  }
+  d2.2 <- sqrt(sum(d1.2))                                 
+  d3.2 <- sqrt(length(Int2)) * d2.2  
+  
+  if(sum(m2 == m2.2) != 0){
+    cat("FALSE")
+    cat("\n")
+    cat("The function calculates wrong Leemis statistics.")
+  }
+  if(sum(d3 == d3.2) != 0){
+    cat("False")
+    cat("\n")
+    cat("The function calculates wrong Cho-Gain statistics.")
+  }
+  if(sum(X) != 1){
+    cat("FALSE")
+    cat("\n")
+    cat("The function calculates the wrong distribution for Yes.Benfords.")
+  }
+  if(sum(X2) != 1){
+    cat("FALSE")
+    cat("\n")
+    cat("The function calculates the wrong distribution for No.Benfords.")
+  }
+  if(sum(m2 == m2.2) == 0 & sum(d3 == d3.2) == 0 & sum(X) == 1 & sum(X2) == 1 & sum(X) - sum(X2) == 0){
+    cat("TRUE")
+    cat("\n")
+    cat("All unit tests have been passed.")
+  }
+}       
+
