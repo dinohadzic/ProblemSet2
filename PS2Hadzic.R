@@ -17,7 +17,7 @@ Election_fraud <- function(Totals, statistic){         #Sets Totals and statisti
   X <- numeric(9)                                     #Creates an empty numeric vector of length 9 and stores it as X.
   
   for(i in 1:9){                                      #This for loop stores, in X, the proportional frequency of the digits 1 through 
-    X[i] <- length(which(Int==i))/length(Int)            #9 in the Integer vector.  
+    X[i] <- length(which(Int==i))/length(Int)            #9 in the Int vector.  
   }                                                      
   
   X <- as.matrix(X)                                   #Converts X into a matrix.
@@ -71,7 +71,7 @@ print.benfords <- function(Totals){                           #Sets Totals as th
   X <- numeric(9)                                             #Creates an empty numeric vector of length 9 and stores it as X. 
   
   for(i in 1:9){                                              #This for loop stores, in X, the proportional frequency of the digits 1 through 
-    X[i] <- length(which(Int==i))/length(Int)                   #9 in the Integer vector.
+    X[i] <- length(which(Int==i))/length(Int)                   #9 in the Int vector.
   } 
   
   m1 <- numeric(9)                                            #Creates an empty numeric vector of length 9 named m1.        
@@ -145,67 +145,92 @@ print.benfords <- function(Totals){                           #Sets Totals as th
 #Question 3: Part 1
 #Develop a function that will test your function.
 
-testing <- function(Yes.Benfords, No.Benfords){   
-  Int <- as.numeric(substr(Yes.Benfords, start=1, stop=1))     
-  X <- numeric(9)                                     
-  for(i in 1:9){                                      
-    X[i] <- length(which(Int==i))/length(Int)  
+Yes.Benfords <- sample(1:1000000, 10000)                        #Creates data where Benford's Law is met.
+No.Benfords <- seq(1:100)                                       #Creates data where Benford's Law is not met.
+
+testing <- function(Yes.Benfords, No.Benfords){                 #Sets Yes.Benfords and No.Benfords as the two arguments in the function "testing."
+  
+  Int <- as.numeric(substr(Yes.Benfords, start=1, stop=1))      #Creates a vector from the input Yes.Benfords, which only includes the first digit
+                                                                  #from every element in Yes.Benfords.  
+  
+  X <- numeric(9)                                               #Creates an empty numeric vector of length 9 and stores it as X.
+  
+  for(i in 1:9){                                                #This for loop stores, in X, the proportional frequency of the digits 1 through   
+    X[i] <- length(which(Int==i))/length(Int)                     #9 in the Int vector.
   }   
-  m1 <- numeric(9)                                    
-  for(i in 1:9){                                     
-    m1[i] <- X[i] - log10(1 + 1/i) 
+  
+  m1 <- numeric(9)                                              #Creates an empty numeric vector of length 9 named m1.
+  
+  for(i in 1:9){                                                #This for loop carries out the first calculation of the Leemis' m statistic for 
+    m1[i] <- X[i] - log10(1 + 1/i)                                #Yes.Benfords, which satisfies Benford's Law.
   } 
-  m2 <- sqrt(length(Int)) * max(abs(m1)) 
   
-  d1 <- numeric(9)                                   
-  for(i in 1:9){                                     
-    d1[i] <- (X[i]-log10(1+1/i))^2
+  m2 <- sqrt(length(Int)) * max(abs(m1))                        #This concludes the calculation for the Leemis' m statistic for Yes.Benfords, which is then 
+                                                                  #stored as m2.
+  
+  d1 <- numeric(9)                                              #Creates an empty numeric vector of length 9, and stores it as d1.
+  
+  for(i in 1:9){                                                #This for loop carries out the first calculation of the Cho-Gains' d statistic for
+    d1[i] <- (X[i]-log10(1+1/i))^2                                #Yes.Benfords, which satisfies Benford's Law.
   }
-  d2 <- sqrt(sum(d1))                                 
-  d3 <- sqrt(length(Int)) * d2 
   
-  Int2 <- as.numeric(substr(No.Benfords, start=1, stop=1))     
-  X2 <- numeric(9)                                     
-  for(i in 1:9){                                      
-    X2[i] <- length(which(Int2==i))/length(Int2)  
-  }                                                                            
-  m1.2 <- numeric(9)                                    
-  for(i in 1:9){                                     
-    m1.2[i] <- X2[i] - log10(1 + 1/i)
+  d2 <- sqrt(sum(d1))                                           #The code on the left carries out the final parts of the d statistic calculation.
+  d3 <- sqrt(length(Int)) * d2                                    #The relevant statistic is then stored as d3.
+  
+  Int2 <- as.numeric(substr(No.Benfords, start=1, stop=1))      #Creates a vector from the input No.Benfords, which only includes the first digit
+                                                                  #from every element in No.Benfords.
+  
+  X2 <- numeric(9)                                              #Creates an empty numeric vector of length 9 and stores it as X2.
+  
+  for(i in 1:9){                                                #This for loop stores, in X2, the proportional frequency of the digits 1 through
+    X2[i] <- length(which(Int2==i))/length(Int2)                  #9 in the Int2 vector.
+  }  
+  
+  m1.2 <- numeric(9)                                            #Creates an empty numeric vector of length 9 named m1.2.
+  
+  for(i in 1:9){                                                #This for loop carries out the first calculation of the Leemis' m statistic for 
+    m1.2[i] <- X2[i] - log10(1 + 1/i)                             #No.Benfords, which does not satisfy Benford's Law.
   } 
-  m2.2 <- sqrt(length(Int2)) * max(abs(m1.2))     
   
-  d1.2 <- numeric(9)                                   
-  for(i in 1:9){                                     
-    d1.2[i] <- (X2[i]-log10(1+1/i))^2
+  m2.2 <- sqrt(length(Int2)) * max(abs(m1.2))                   #This concludes the calculation for the Leemis' m statistic for No.Benfords, which is then 
+                                                                  #stored as m2.2.
+  
+  d1.2 <- numeric(9)                                            #Creates an empty numeric vector of length 9, and stores it as d1.2.
+  
+  for(i in 1:9){                                                #This for loop carries out the first calculation of the Cho-Gains' d statistic for
+    d1.2[i] <- (X2[i]-log10(1+1/i))^2                             #No.Benfords, which does not satisfy Benford's Law.
   }
-  d2.2 <- sqrt(sum(d1.2))                                 
-  d3.2 <- sqrt(length(Int2)) * d2.2  
   
-  if(sum(m2 == m2.2) != 0){
-    cat("FALSE")
+  d2.2 <- sqrt(sum(d1.2))                                       #The code on the left carries out the final parts of the d statistic calculation.
+  d3.2 <- sqrt(length(Int2)) * d2.2                               #The relevant statistic is then stored as d3.2.
+  
+  if(sum(m2 == m2.2) != 0){                                     #This if statement ensures that if the m statistic for Yes.Benfords and No.Benfords is
+    cat("FALSE")                                                  #the same, the output will say that the function calculates wrong Leemis statistics.
     cat("\n")
     cat("The function calculates wrong Leemis statistics.")
   }
-  if(sum(d3 == d3.2) != 0){
-    cat("False")
+  if(sum(d3 == d3.2) != 0){                                     #This if statment ensures that if the d statistic for Yes.Benfords and No.Benfords is
+    cat("False")                                                  #the same, the output will say that the function calculates wrong Cho-Gain statistics.
     cat("\n")
     cat("The function calculates wrong Cho-Gain statistics.")
   }
-  if(sum(X) != 1){
-    cat("FALSE")
-    cat("\n")
+  if(sum(X) != 1){                                              #This if statement ensures that if the proportional digit frequencies for Yes.Benfords
+    cat("FALSE")                                                  #do not add up to 1, the ouput will say that the function calculates the wrong
+    cat("\n")                                                                 #digit distribution for Yes.Benfords.
     cat("The function calculates the wrong distribution for Yes.Benfords.")
   }
-  if(sum(X2) != 1){
-    cat("FALSE")
-    cat("\n")
+  if(sum(X2) != 1){                                             #This if statement ensures that if the proportional digit frequencies for No.Benfords
+    cat("FALSE")                                                  #do not add up to 1, the ouput will say that the function calculates the wrong
+    cat("\n")                                                                 #digit distribution for No.Benfords.
     cat("The function calculates the wrong distribution for No.Benfords.")
   }
   if(sum(m2 == m2.2) == 0 & sum(d3 == d3.2) == 0 & sum(X) == 1 & sum(X2) == 1 & sum(X) - sum(X2) == 0){
     cat("TRUE")
     cat("\n")
-    cat("All unit tests have been passed.")
-  }
+    cat("All unit tests have been passed.")                     #Finally, this if statment ensures that all unit tests pass, the output will say
+  }                                                               #that your function has passed all unit tests.
 }       
+
+testing(Yes.Benfords, No.Benfords)                              #The output from running the function states that all unit tests have been passed.
+
 
